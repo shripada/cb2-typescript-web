@@ -2,5 +2,8 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  testPathIgnorePatterns: ['node_modules', 'dist'],
+  testPathIgnorePatterns: ['node_modules/(?!node-fetch)', 'dist'],
+  transform: {
+    '^.+\\.(js)?$': require.resolve('babel-jest'),
+  },
 };

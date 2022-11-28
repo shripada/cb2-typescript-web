@@ -16,6 +16,8 @@ const {dispatch, getStore, setUpdateCallback} = appModel;
 // setUpdateCallback(store => {
 //   console.log(store);
 // });
+const updateCallback = jest.fn;
+setUpdateCallback(updateCallback);
 
 // // Store before dispatching image loaded action
 // console.log(getStore());
@@ -61,9 +63,12 @@ describe('Model layer actions', () => {
   });
 });
 
+// inner working of jest.fn
+
 describe('dispatch image and joke data loaded tests', () => {
   test('image loaded with valid url', () => {
     const updateCallback = jest.fn();
+
     appModel.setUpdateCallback(updateCallback);
 
     const imagePayload: ImageDataPayloadInterface = {
@@ -71,7 +76,7 @@ describe('dispatch image and joke data loaded tests', () => {
     };
     const dogImageAction = imageDataLoadedAction(imagePayload);
     appModel.dispatch(dogImageAction);
-    let store: StoreInterface = appModel.getStore();
+    const store: StoreInterface = appModel.getStore();
     const expected: StoreInterface = {
       dogImageURL: 'a/dog/img/url',
       jokeData: {type: '', setup: '', delivery: '', joke: ''},
@@ -81,7 +86,7 @@ describe('dispatch image and joke data loaded tests', () => {
     expect(updateCallback).toBeCalled();
     expect(updateCallback).toHaveBeenCalledTimes(1);
 
-    let jokeDataAction = jokeDataLoadedAction({
+    const jokeDataAction = jokeDataLoadedAction({
       type: 'twopart',
       setup: 'what is today?',
       delivery: 'is not yesterday',
